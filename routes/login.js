@@ -1,13 +1,9 @@
-// routes/login.js
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const express = require('express');
+import express from 'express';
+import pool from '../db.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
 const router = express.Router();
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const pool = require('../db');
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const bcrypt = require('bcrypt');
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const jwt = require('jsonwebtoken');
 
 router.post('/', async (req, res) => {
 	const { login, password } = req.body;
@@ -40,5 +36,4 @@ router.post('/', async (req, res) => {
 	}
 });
 
-// eslint-disable-next-line no-undef
-module.exports = router;
+export default router;

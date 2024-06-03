@@ -1,23 +1,34 @@
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const express = require('express');
-const router = express.Router();
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const pool = require('../db');
+import express from 'express';
+import pool from '../db.js';
 
+const router = express.Router();
+
+// Маршрут для сохранения анкеты соискателя
 router.post('/', async (req, res) => {
-	const { first_name, second_name, surname, experience, skills, field_of_work, login } = req.body;
+	const { first_name, second_name, surname, experience, skills, field_of_work, number, login } = req.body;
 
 	try {
-		// Выполняем запрос к базе данных для сохранения данных
-		await pool.promise().query('INSERT INTO applicants (first_name, second_name, surname, experience, skills, field_of_work, login) VALUES (?, ?, ?, ?, ?, ?, ?)',
-			[first_name, second_name, surname, experience, skills, field_of_work, login]);
+		// Проверка на наличие существующей анкеты
+		const [existingApplicant] = await pool.promise().query(
+			'SELECT * FROM applicants WHERE login = ?',
+			[login]
+		);
 
-		res.status(201).json({ message: 'Profile created successfully' });
+		if (existingApplicant.length > 0) {
+			return res.status(400).json({ error: 'Анкета уже существует' });
+		}
+
+		// Вставка новой анкеты
+		await pool.promise().query(
+			'INSERT INTO applicants (first_name, second_name, surname, experience, skills, field_of_work, number, login) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+			[first_name, second_name, surname, experience, skills, field_of_work, number, login]
+		);
+
+		res.status(201).json({ message: 'Анкета успешно создана' });
 	} catch (error) {
-		console.error('Error creating profile:', error);
-		res.status(500).json({ error: 'Error creating profile' });
+		console.error('Ошибка при сохранении данных:', error);
+		res.status(500).json({ error: 'Ошибка при сохранении данных' });
 	}
 });
 
-// eslint-disable-next-line no-undef
-module.exports = router;
+export default router;

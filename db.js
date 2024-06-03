@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 
 const pool = mysql.createPool({
 	host: 'localhost',
@@ -11,5 +10,4 @@ const pool = mysql.createPool({
 	queueLimit: 0
 });
 
-// eslint-disable-next-line no-undef
-module.exports = pool;
+export default pool;

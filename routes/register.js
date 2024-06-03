@@ -1,10 +1,8 @@
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const express = require('express');
+import express from 'express';
+import pool from '../db.js';
+import bcrypt from 'bcrypt';
+
 const router = express.Router();
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const pool = require('../db');
-// eslint-disable-next-line no-undef, @typescript-eslint/no-var-requires
-const bcrypt = require('bcrypt');
 
 router.post('/', async (req, res) => {
 	const { login, password, roles } = req.body;
@@ -32,5 +30,4 @@ router.post('/', async (req, res) => {
 	}
 });
 
-// eslint-disable-next-line no-undef
-module.exports = router;
+export default router;

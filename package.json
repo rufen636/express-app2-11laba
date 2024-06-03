@@ -1,9 +1,12 @@
 {
+	"type": "module",
 	"name": "express-app2",
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "node ./bin/www"
+		"start": "node ./bin/www",
+		"test": "mocha 'test/**/*.js'",
+		"test:coverage": "nyc npm test"
 	},
 	"dependencies": {
 		"bcrypt": "^5.1.1",
@@ -15,6 +18,30 @@
 		"jade": "~1.11.0",
 		"jsonwebtoken": "^9.0.2",
 		"morgan": "~1.9.1",
-		"mysql2": "^3.9.7"
+		"mysql2": "^3.9.7",
+		"pdfkit": "^0.15.0"
+	},
+	"devDependencies": {
+		"chai": "^5.1.1",
+		"chai-http": "^4.4.0",
+		"mocha": "^10.4.0",
+		"nyc": "^15.1.0",
+		"sinon": "^18.0.0",
+		"supertest": "^7.0.0"
+	},
+	"nyc": {
+		"include": [
+			"test/**/*.js",
+			"routes/**/*.js"
+		],
+		"exclude": [
+			"test/**/*.js"
+		],
+		"reporter": [
+			"lcov",
+			"text-summary"
+		],
+		"all": true,
+		"report-dir": "./coverage"
 	}
 }
